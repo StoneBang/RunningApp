@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CrimenalIntent</string>
+    <string name="new_crime">NewCrime</string>
+    <string name="show_subtitle">ShowSubtitle</string>
+    <string name="hide_subtitle">HideSubtitle</string>
+    <string name="subtitle_format">%1$s  crimes</string>
+
 </resources>
