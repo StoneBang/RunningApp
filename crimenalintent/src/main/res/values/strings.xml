@@ -4,5 +4,10 @@
     <string name="show_subtitle">ShowSubtitle</string>
     <string name="hide_subtitle">HideSubtitle</string>
     <string name="subtitle_format">%1$s  crimes</string>
+    <string name="crime_is_solved">这个陋习已经解决了</string>
+    <string name="crime_is_unsolved">这个陋习依然存在</string>
+    <string name="crime_is_suspect">这个陋习的嫌疑人恐怕是 %s</string>
+    <string name="crime_is_suject">女士们,先生们</string>
+    <string name="crime_is_report">%1s ,这个陋习发生在 %2$s, %3$s,  嫌疑人是 %4$s !!!</string>
 
 </resources>

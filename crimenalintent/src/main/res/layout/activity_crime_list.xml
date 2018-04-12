@@ -7,6 +7,7 @@
     tools:context="com.hbb.coder.crimenalintent.activity.CrimeListActivity">
 
 
+
     <FrameLayout
         android:id="@+id/activity_crime_fragment_container"
         android:layout_width="match_parent"

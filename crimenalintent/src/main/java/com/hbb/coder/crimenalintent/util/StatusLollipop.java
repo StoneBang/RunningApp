@@ -56,7 +56,6 @@ class StatusLollipop {
             //设置系统状态栏处于可见状态
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
-        //view不根据系统窗口来调整自己的布局
         ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
         if (mChildView != null) {

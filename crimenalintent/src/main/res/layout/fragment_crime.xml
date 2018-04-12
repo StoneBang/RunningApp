@@ -107,7 +107,7 @@
         app:layout_constraintTop_toBottomOf="@+id/crime_title2" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/choosePeople"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="选择联系人"
@@ -123,7 +123,7 @@
         app:layout_constraintVertical_bias="0.127" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/send_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
