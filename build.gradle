@@ -1,5 +1,5 @@
+apply from: "config.gradle"
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     
     repositories {
@@ -15,6 +15,8 @@ buildscript {
     }
 }
 
+
+
 allprojects {
     repositories {
         google()
@@ -25,3 +27,17 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+
+task printProperties() {
+    doLast {
+        println rootProject.getProperties().get("test")
+        println "password=$test2"
+        println rootProject.ext.asd
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = 4.5
+}
+
