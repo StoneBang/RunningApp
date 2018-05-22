@@ -9,6 +9,7 @@ import com.hbb.network.interfaces.CommonServices;
 import com.hbb.network.netmodel.CommonResponse;
 import com.hbb.network.netmodel.Translater;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,13 +40,8 @@ public class BasePresent{
                 getDaggerServiceComponent().inject(this);
     }
 
-
-
     @Inject
-    CommonServices mCommonServices;
-
-
-
+    public CommonServices mCommonServices;
 
     public void request() {
 
@@ -56,7 +52,6 @@ public class BasePresent{
 
         //步骤6:发送网络请求(异步)
         translateCall.enqueue(new Callback<CommonResponse<Translater>>(){
-
 
 
             //请求成功时回调
@@ -95,14 +90,14 @@ public class BasePresent{
                     @Override
                     public void onNext(List<List<Translater.TranslateResultBean>> value) {
 
-                        mBaseActivity.success(value.get(0).get(0).getTgt());
+//                        mBaseActivity.success(value.get(0).get(0).getTgt());
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
-                        mBaseActivity.fail("requestObserverable 请求失败");
+//                        mBaseActivity.fail("requestObserverable 请求失败");
                     }
 
                     @Override
@@ -114,4 +109,27 @@ public class BasePresent{
     }
 
 
+    public void requestObserverable(Call<HashMap<String, Object>> weatherForecast ) {
+
+        weatherForecast.enqueue(new Callback<HashMap<String, Object>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
+                mBaseActivity.success(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
+//                mBaseActivity.fail(t.getMessage());
+            }
+        });
+    }
+
+    public void getWeatherForecast(String city) {
+        HashMap<String, Object> weatherRequest = new HashMap<>();
+        weatherRequest.put("location",city);
+        weatherRequest.put("key", Constants.weatherKey);
+        Call<HashMap<String, Object>> weatherForecast = mCommonServices.
+                getWeatherForecast(Constants.weatherForecastUrl,weatherRequest);
+        requestObserverable(weatherForecast);
+    }
 }

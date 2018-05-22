@@ -1,1 +1,1 @@
-include ':app', ':network', ':crimenalintent'
+include ':app', ':network', ':crimenalintent', ':smartgeoponics'

@@ -25,8 +25,9 @@ public class PresentModule {
 
     @Provides
     public BasePresent getBasePresent() {
-
         return new BasePresent(mBaseActivity);
     }
+
+
 
 }

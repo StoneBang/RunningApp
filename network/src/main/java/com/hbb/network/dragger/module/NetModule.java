@@ -9,12 +9,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetModule {
-    
+
     String mBaseUrl;
 
 
@@ -56,10 +63,9 @@ public class NetModule {
     }
 
 
-
     @Provides
     @Singleton
-    Retrofit provideRetrofit( OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -71,28 +77,11 @@ public class NetModule {
 
     @Provides
     @Singleton
-     OkHttpClient provideCreateOkHttpClient() {
-         OkHttpClient.Builder httpClient =
-                new OkHttpClient.Builder();
+    OkHttpClient provideCreateOkHttpClient() {
+        OkHttpClient httpClient = new OkHttpClient();
 
-        /*httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                final Request original = chain.request();
-                final HttpUrl originalHttpUrl = original.url();
 
-                final HttpUrl url = originalHttpUrl.newBuilder()
-                        .addQueryParameter("username", "demo")
-                        .build();
-                final Request.Builder requestBuilder = original.newBuilder()
-                        .url(url);
+        return httpClient;
 
-                final Request request = requestBuilder.build();
-                return chain.proceed(request);
-            }
-        });*/
-
-        return httpClient.build();
     }
-
 }

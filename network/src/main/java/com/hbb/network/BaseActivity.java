@@ -35,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements IView {
                 build().
                 inject(this);
         //test
-        mBasePresent.requestObserverable();
+//        mBasePresent.requestObserverable();
 
     }
 

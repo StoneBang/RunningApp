@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/crimenalintent" />
             <option value="$PROJECT_DIR$/network" />
+            <option value="$PROJECT_DIR$/smartgeoponics" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

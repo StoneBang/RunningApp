@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/crimenalintent/crimenalintent.iml" filepath="$PROJECT_DIR$/crimenalintent/crimenalintent.iml" />
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartgeoponics/smartgeoponics.iml" filepath="$PROJECT_DIR$/smartgeoponics/smartgeoponics.iml" />
     </modules>
   </component>
 </project>
