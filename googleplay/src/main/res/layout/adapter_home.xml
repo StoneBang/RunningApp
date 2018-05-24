@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:padding="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/selector_list_item"
+        android:orientation="vertical">
+        
+        <!-- 第一行 -->
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView android:layout_width="55dp"
+                android:src="@drawable/ic_default"
+                android:id="@+id/iv_icon"
+                android:layout_height="55dp"/>
+            
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:id="@+id/tv_name"
+                    android:textSize="16sp"
+                    android:textColor="@color/txt_title"
+                    android:text="呦呦呦，切克闹，煎饼果子来一套"/>
+                <RatingBar android:layout_width="wrap_content"
+                    style="@android:style/Widget.RatingBar"
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/rb_star"
+                    android:isIndicator="true"
+                    android:layout_marginBottom="2dp"
+                    android:progressDrawable="@drawable/ratingbar_progress"
+                    android:layout_height="14dp"/>
+                
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:id="@+id/tv_size"
+                    android:textColor="@color/txt_small"
+                    android:text="大小"/>
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        <View android:layout_width="match_parent"
+             android:background="#66666666"
+             android:layout_marginTop="8dp"
+             android:layout_marginBottom="8dp"
+            android:layout_height="0.5dp"/>
+        
+        <TextView android:layout_width="match_parent"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:id="@+id/tv_des"
+            android:textColor="@color/txt_small"
+            android:text="呦呦呦，切克闹，煎饼果子来一套,煎饼果子来一套煎饼果子来一套煎饼果子来一套煎饼果子来一套煎饼果子来一套"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

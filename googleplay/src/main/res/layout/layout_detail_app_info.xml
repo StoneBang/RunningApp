@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@drawable/grid_item_bg_normal"
+    android:orientation="vertical" >
+    <!-- 第一行 -->
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView android:layout_width="55dp"
+            android:id="@+id/iv_icon"
+            android:src="@drawable/ic_default"
+            android:layout_height="55dp"/>
+        
+        <LinearLayout android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_height="55dp">
+            
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="为了部落"
+                android:textColor="@color/txt_title"
+                android:textSize="16sp"
+                android:id="@+id/tv_name"
+                />
+            
+             <RatingBar android:layout_width="wrap_content"
+                    style="@android:style/Widget.RatingBar"
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/rb_star"
+                    android:isIndicator="true"
+                    android:progressDrawable="@drawable/ratingbar_progress"
+                    android:layout_height="14dp"/>
+            
+        </LinearLayout>
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+        <TextView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_small"
+            android:textSize="14sp"
+            android:id="@+id/tv_download_num"
+            android:text="下载："/>
+        <TextView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_small"
+            android:textSize="14sp"
+            android:id="@+id/tv_version"
+            android:text="版本："/>
+    </LinearLayout>
+ <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+        <TextView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_small"
+            android:textSize="14sp"
+            android:id="@+id/tv_date"
+            android:text="日期："/>
+        <TextView android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt_small"
+            android:textSize="14sp"
+            android:id="@+id/tv_size"
+            android:text="大小："/>
+    </LinearLayout>
+    
+</LinearLayout>

@@ -1,0 +1,14 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="stellarmap_padding">15dp</dimen>
+    <dimen name="flowlayout_padding">15dp</dimen>
+    <dimen name="flowlayout_spacing">15dp</dimen>
+    <dimen name="hot_text_hpading">12dp</dimen>
+    <dimen name="hot_text_vpading">6dp</dimen>
+    <dimen name="hot_radius">8dp</dimen>
+    
+    <dimen name="app_screen_width">108dp</dimen>
+    <dimen name="app_screen_height">180dp</dimen>
+
+</resources>
