@@ -1,1 +1,1 @@
-include ':app', ':network', ':crimenalintent', ':smartgeoponics'
+include ':app', ':network', ':crimenalintent', ':smartgeoponics', ':pulltorefresh', ':citychoose', 'googleplay', 'webserver'

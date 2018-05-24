@@ -2,6 +2,7 @@ package com.hbb.network.base;
 
 import android.util.Log;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.hbb.network.BaseActivity;
 import com.hbb.network.Function.HttpResultFunc;
 import com.hbb.network.MyAppication;
@@ -9,6 +10,7 @@ import com.hbb.network.interfaces.CommonServices;
 import com.hbb.network.netmodel.CommonResponse;
 import com.hbb.network.netmodel.Translater;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -114,12 +116,23 @@ public class BasePresent{
         weatherForecast.enqueue(new Callback<HashMap<String, Object>>() {
             @Override
             public void onResponse(Call<HashMap<String, Object>> call, Response<HashMap<String, Object>> response) {
-                mBaseActivity.success(response.body());
+                if(response.body()!=null){
+                    ArrayList heWeather6 = (ArrayList) response.body().get("HeWeather6");
+                    LinkedTreeMap<String,Object> majorDate = (LinkedTreeMap<String, Object>) heWeather6.get(0);
+                    String status = majorDate.get("status")+"";
+                    if("ok".equals(status)){
+                        mBaseActivity.success(response.body());
+                    }else{
+                        mBaseActivity.fail("未请求到天气数据,请检查网络,稍后再试");
+                    }
+
+                }
+
             }
 
             @Override
             public void onFailure(Call<HashMap<String, Object>> call, Throwable t) {
-//                mBaseActivity.fail(t.getMessage());
+                mBaseActivity.fail(t.getMessage());
             }
         });
     }

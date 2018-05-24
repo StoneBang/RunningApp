@@ -3,15 +3,20 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="disableWrapperSourceDistributionNotification" value="true" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/citychoose" />
             <option value="$PROJECT_DIR$/crimenalintent" />
+            <option value="$PROJECT_DIR$/googleplay" />
             <option value="$PROJECT_DIR$/network" />
+            <option value="$PROJECT_DIR$/pulltorefresh" />
             <option value="$PROJECT_DIR$/smartgeoponics" />
+            <option value="$PROJECT_DIR$/webserver" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

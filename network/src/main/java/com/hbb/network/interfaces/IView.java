@@ -10,5 +10,5 @@ public interface IView {
 
     //create method  you want
     void  success(HashMap<String, Object> object);
-    void  fail(HashMap<String, Object> object);
+    void  fail(Object object);
 }

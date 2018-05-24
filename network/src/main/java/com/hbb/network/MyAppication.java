@@ -1,6 +1,7 @@
 package com.hbb.network;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.hbb.network.base.Constants;
 import com.hbb.network.dragger.component.DaggerNetComponent;
@@ -18,6 +19,7 @@ import com.hbb.network.dragger.module.ServiceModule;
 public class MyAppication extends Application {
 
     private NetComponent mDaggerNetComponent;
+
     private ServiceComponent mDaggerServiceComponent;
 
     public NetComponent getDaggerNetComponent() {
@@ -28,20 +30,24 @@ public class MyAppication extends Application {
         return mDaggerServiceComponent;
     }
 
+    public static Context sContext;
     @Override
     public void onCreate() {
         super.onCreate();
 
+        sContext=this;
 
         mDaggerNetComponent = DaggerNetComponent.builder().
                 appModule(new AppModule(this)).
                 netModule(new NetModule(Constants.BASE_URL)).
                 build();
 
-        mDaggerServiceComponent= DaggerServiceComponent.builder().
+        mDaggerServiceComponent = DaggerServiceComponent.builder().
                 netComponent(mDaggerNetComponent).
                 serviceModule(new ServiceModule()).
                 build();
 
     }
+
+
 }
