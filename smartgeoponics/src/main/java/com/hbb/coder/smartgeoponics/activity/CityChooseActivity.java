@@ -1,7 +1,9 @@
 package com.hbb.coder.smartgeoponics.activity;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.hbb.coder.smartgeoponics.R;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * 城市选择
  */
-public class CityChooseActivity extends BaseActivity {
+public class CityChooseActivity extends AppCompatActivity {
 
     private List<CityBean> mCityList;
     private TextView mSlideTip;
@@ -34,19 +36,12 @@ public class CityChooseActivity extends BaseActivity {
 
     }
 
+
     private void initView() {
         mSlideTip = findViewById(R.id.side_tip);
         mSideBar = findViewById(R.id.city_side);
         mCityRecycle = findViewById(R.id.city_recycle);
     }
 
-    @Override
-    public void success(HashMap<String, Object> object) {
 
-    }
-
-    @Override
-    public void fail(Object object) {
-
-    }
 }

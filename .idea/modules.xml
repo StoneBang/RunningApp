@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" filepath="$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/smartgeoponics/smartgeoponics.iml" filepath="$PROJECT_DIR$/smartgeoponics/smartgeoponics.iml" />
       <module fileurl="file://$PROJECT_DIR$/webserver/webserver.iml" filepath="$PROJECT_DIR$/webserver/webserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widget/widget.iml" filepath="$PROJECT_DIR$/widget/widget.iml" />
     </modules>
   </component>
 </project>

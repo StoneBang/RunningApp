@@ -1,6 +1,10 @@
 package com.hbb.coder.citychoose;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -42,8 +46,9 @@ import java.util.List;
  */
 
 public class CityPickDialogFragment extends AppCompatDialogFragment implements InnerListener,
-        TextWatcher,SideIndexBar.OnIndexTouchedChangedListener,View.OnClickListener {
+        TextWatcher, SideIndexBar.OnIndexTouchedChangedListener, View.OnClickListener {
 
+    public static final String LOADLOCATION = "location";
     private boolean enableAnim;
     private CityLabel mCityLable;
     private List<City> mAllCities;
@@ -63,13 +68,25 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     private ImageView mClearAllBtn;
     private int mAnimStyle;
     private OnPickListener mOnPickListener;
+    private BroadcastReceiver mLocationBroadcast=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction()==LOADLOCATION){
 
+                String city = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+                CityPicker.getInstance().locateComplete(new LocatedCity(city, "", ""), LocateState.SUCCESS);
+
+            }
+        }
+    };
     /**
      * 获取实例
+     *
      * @param enable 是否启用动画效果
      * @return
      */
-    public static CityPickDialogFragment newInstance(boolean enable){
+    public static CityPickDialogFragment newInstance(boolean enable) {
         final CityPickDialogFragment fragment = new CityPickDialogFragment();
         Bundle args = new Bundle();
         args.putBoolean("cp_enable_anim", enable);
@@ -81,6 +98,9 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        registBroadcast();
+
         setStyle(STYLE_NO_TITLE, R.style.CityPickerStyle);
 
         Bundle args = getArguments();
@@ -98,12 +118,17 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
         mResults = mAllCities;
     }
 
+    private void registBroadcast() {
+        IntentFilter intentFilter = new IntentFilter(LOADLOCATION);
+        getActivity().registerReceiver(mLocationBroadcast,intentFilter);
+    }
 
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mContentView = View.inflate(getActivity(),R.layout.cp_dialog_city_picker, null);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        mContentView = View.inflate(getActivity(), R.layout.cp_dialog_city_picker, null);
 
         mRecyclerView = mContentView.findViewById(R.id.cp_city_recyclerview);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -119,7 +144,7 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 //确保定位城市能正常刷新
-                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     mAdapter.refreshLocationItem();
                 }
             }
@@ -144,13 +169,12 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     }
 
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         Window window = dialog.getWindow();
-        if(window != null) {
+        if (window != null) {
             window.getDecorView().setPadding(0, 0, 0, 0);
             window.setBackgroundDrawableResource(android.R.color.transparent);
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -162,25 +186,25 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     }
 
 
-    public void setOnPickListener(OnPickListener listener){
+    public void setOnPickListener(OnPickListener listener) {
         this.mOnPickListener = listener;
     }
 
-    public void setLocatedCity(LocatedCity location){
+    public void setLocatedCity(LocatedCity location) {
         mLocatedCity = location;
     }
 
-    public void setHotCities(List<HotCity> data){
-        if (data != null && !data.isEmpty()){
+    public void setHotCities(List<HotCity> data) {
+        if (data != null && !data.isEmpty()) {
             this.mHotCities = data;
         }
     }
 
-    public void setAnimationStyle(@StyleRes int style){
+    public void setAnimationStyle(@StyleRes int style) {
         this.mAnimStyle = style <= 0 ? R.style.DefaultCityPickerAnimation : style;
     }
 
-    public void locationChanged(LocatedCity location, int state){
+    public void locationChanged(LocatedCity location, int state) {
         mAdapter.updateLocateState(location, state);
     }
 
@@ -200,10 +224,10 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     }
 
     private void initLocatedCity() {
-        if (mLocatedCity == null){
+        if (mLocatedCity == null) {
             mLocatedCity = new LocatedCity(getString(R.string.cp_locating), "未知", "0");
             locateState = LocateState.FAILURE;
-        }else{
+        } else {
             locateState = LocateState.SUCCESS;
         }
     }
@@ -212,14 +236,14 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     @Override
     public void dismiss(int position, City data) {
         dismiss();
-        if (mOnPickListener != null){
+        if (mOnPickListener != null) {
             mOnPickListener.onPick(position, data);
         }
     }
 
     @Override
     public void locate() {
-        if (mOnPickListener != null){
+        if (mOnPickListener != null) {
             mOnPickListener.onLocate();
         }
     }
@@ -238,20 +262,20 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     public void afterTextChanged(Editable s) {
 
         String keyword = s.toString();
-        if (TextUtils.isEmpty(keyword)){
+        if (TextUtils.isEmpty(keyword)) {
             mClearAllBtn.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.GONE);
             mResults = mAllCities;
-            ((SectionItemDecoration)(mRecyclerView.getItemDecorationAt(0))).setData(mResults);
+            ((SectionItemDecoration) (mRecyclerView.getItemDecorationAt(0))).setData(mResults);
             mAdapter.updateData(mResults);
-        }else {
+        } else {
             mClearAllBtn.setVisibility(View.VISIBLE);
             //开始数据库查找
             mResults = mCityLable.getSearchCityList(keyword);
-            ((SectionItemDecoration)(mRecyclerView.getItemDecorationAt(0))).setData(mResults);
-            if (mResults == null || mResults.isEmpty()){
+            ((SectionItemDecoration) (mRecyclerView.getItemDecorationAt(0))).setData(mResults);
+            if (mResults == null || mResults.isEmpty()) {
                 mEmptyView.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mEmptyView.setVisibility(View.GONE);
                 mAdapter.updateData(mResults);
             }
@@ -264,7 +288,7 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
         int id = v.getId();
         if (id == R.id.cp_cancel) {
             dismiss(-1, null);
-        }else if(id == R.id.cp_clear_all){
+        } else if (id == R.id.cp_clear_all) {
             mSearchBox.setText("");
         }
     }
@@ -273,5 +297,13 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     public void onIndexChanged(String index, int position) {
         //滚动RecyclerView到索引位置
         mAdapter.scrollToSection(index);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(mLocationBroadcast);
+
     }
 }

@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/pulltorefresh" />
             <option value="$PROJECT_DIR$/smartgeoponics" />
             <option value="$PROJECT_DIR$/webserver" />
+            <option value="$PROJECT_DIR$/widget" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

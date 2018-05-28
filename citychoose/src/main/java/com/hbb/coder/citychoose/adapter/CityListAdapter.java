@@ -167,7 +167,7 @@ public class CityListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0 &&  TextUtils.equals("定", mData.get(position).getSection().substring(0, 1))) {
+        if (position == 0 && TextUtils.equals("定", mData.get(position).getSection().substring(0, 1))) {
 
             return VIEW_TYPE_CURRENT;
         }
@@ -184,7 +184,7 @@ public class CityListAdapter extends RecyclerView.Adapter {
     }
 
 
-    public void refreshLocationItem(){
+    public void refreshLocationItem() {
         //如果定位城市的item可见则进行刷新
         if (stateChanged && mLayoutManager.findFirstVisibleItemPosition() == 0) {
             stateChanged = false;
@@ -192,12 +192,12 @@ public class CityListAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void updateData(List<City> data){
+    public void updateData(List<City> data) {
         this.mData = data;
         notifyDataSetChanged();
     }
 
-    public void updateLocateState(LocatedCity location, int state){
+    public void updateLocateState(LocatedCity location, int state) {
         mData.remove(0);
         mData.add(0, location);
         stateChanged = !(locateState == state);
@@ -208,26 +208,29 @@ public class CityListAdapter extends RecyclerView.Adapter {
 
     /**
      * 滚动RecyclerView到索引位置
+     *
      * @param index
      */
-    public void scrollToSection(String index){
+    public void scrollToSection(String index) {
         if (mData == null || mData.isEmpty()) {
             return;
         }
-        if (TextUtils.isEmpty(index)){
+        if (TextUtils.isEmpty(index)) {
             return;
         }
         int size = mData.size();
         for (int i = 0; i < size; i++) {
-            if (TextUtils.equals(index.substring(0, 1), mData.get(i).getSection().substring(0, 1))){
-                if (mLayoutManager != null){
+            if (TextUtils.equals(index.substring(0, 1), mData.get(i).getSection().substring(0, 1))) {
+                if (mLayoutManager != null) {
                     mLayoutManager.scrollToPositionWithOffset(i, 0);
                     if (TextUtils.equals(index.substring(0, 1), "定")) {
                         //防止滚动时进行刷新
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (stateChanged) notifyItemChanged(0);
+                                if (stateChanged) {
+                                    notifyItemChanged(0);
+                                }
                             }
                         }, 1000);
                     }

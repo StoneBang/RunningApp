@@ -49,5 +49,9 @@ public class MyAppication extends Application {
 
     }
 
-
+    @Override
+    public void onTerminate() {
+        sContext=null;
+        super.onTerminate();
+    }
 }

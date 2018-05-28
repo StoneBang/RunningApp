@@ -1,9 +1,11 @@
 package com.hbb.coder.smartgeoponics.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.internal.LinkedTreeMap;
@@ -24,13 +26,31 @@ public class WeatherActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusUtils.translucentStatusBar(this);
-        setContentView(R.layout.activity_weather);
-        mWeatherRecycle = findViewById(R.id.weather_recycle);
-        mBasePresent.getWeatherForecast("南京市");
+
+
+    }
+
+    @Override
+    protected void requestData() {
+        if(getIntent()!=null){
+            String city = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+            mBasePresent.getWeatherForecast(city);
+        }
+    }
+
+
+    @Override
+    public View getSuccessView() {
+        View inflate = View.inflate(WeatherActivity.this, R.layout.activity_weather,
+                null);
+        mWeatherRecycle = inflate.findViewById(R.id.weather_recycle);
+        return inflate;
     }
 
     @Override
     public void success(HashMap<String, Object> object) {
+
+        serverDate=object;
 
         ArrayList heWeather6 = (ArrayList) object.get("HeWeather6");
 
