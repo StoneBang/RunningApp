@@ -46,6 +46,26 @@
         </activity>
         <activity android:name=".activity.WeatherActivity" />
         <activity android:name=".activity.CityChooseActivity"></activity>
+        <activity android:name=".activity.Test1Activity"></activity>
+        <activity android:name=".activity.Test2Activity"></activity>
+        <activity android:name=".activity.Test3Activity"></activity>
+        <activity android:name=".activity.Test4Activity"></activity>
+        <activity android:name=".activity.Test5Activity"></activity>
+        <activity android:name=".activity.Test6Activity"></activity>
+        <activity android:name=".activity.Test7Activity"></activity>
+        <activity android:name=".activity.Test8Activity"></activity>
+        <activity android:name=".activity.Test9Activity"></activity>
+        <activity android:name=".activity.Test10Activity"></activity>
+        <activity android:name=".activity.Test11Activity"></activity>
+        <activity android:name=".activity.Test12Activity"></activity>
+        <activity android:name=".activity.Test13Activity"></activity>
+        <activity android:name=".activity.Test14Activity"></activity>
+        <activity android:name=".activity.Test15Activity"></activity>
+        <activity android:name=".activity.Test16Activity"></activity>
+        <activity android:name=".activity.Test17Activity"></activity>
+        <activity android:name=".activity.Test18Activity"></activity>
+        <activity android:name=".activity.Test19Activity"></activity>
+        <activity android:name=".activity.Test20Activity"></activity>
 
 
         <service android:name="com.hbb.coder.citychoose.location.LocateCityService"/>

@@ -1,7 +1,10 @@
 package com.hbb.coder.smartgeoponics;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,14 +12,19 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hbb.coder.citychoose.CityPickDialogFragment;
 import com.hbb.coder.citychoose.CityPicker;
 import com.hbb.coder.citychoose.bean.City;
 import com.hbb.coder.citychoose.bean.HotCity;
+import com.hbb.coder.citychoose.bean.LocateState;
+import com.hbb.coder.citychoose.bean.LocatedCity;
 import com.hbb.coder.citychoose.listener.OnPickListener;
 import com.hbb.coder.citychoose.location.LocateCityService;
-import com.hbb.coder.smartgeoponics.activity.WeatherActivity;
+import com.hbb.coder.citychoose.utils.SharePerferenceUtils;
+import com.hbb.coder.smartgeoponics.activity.Test1Activity;
 import com.hbb.coder.smartgeoponics.utils.StatusUtils;
 import com.hbb.coder.smartgeoponics.utils.StringUtils;
 import com.hbb.coder.smartgeoponics.utils.ToastUtils;
@@ -24,12 +32,9 @@ import com.hbb.coder.widget.banner.Banner;
 import com.hbb.coder.widget.banner.BannerConfig;
 import com.hbb.coder.widget.banner.GlideImageLoader;
 import com.hbb.coder.widget.banner.Transformer;
-import com.hbb.network.BaseActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 
 
 /**
@@ -38,11 +43,25 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
 
-    private static final int BAIDU_ACCESS_COARSE_LOCATION = 100;
+    private static final int CITY_REQUEST_CODE = 100;
+    private static final int MAIN_REQUEST_CODE = 200;
+
     private List<HotCity> hotCities;
     private Banner mBaner;
     private ArrayList<String> mBannerList;
     private ArrayList<String> mBannerTitleList;
+    private BroadcastReceiver mLocationBroadcast = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() == CityPickDialogFragment.MAIN_REQUEST_ACTION) {
+                String city = intent.getStringExtra(Intent.EXTRA_TEXT);
+                mCity.setText(city);
+                SharePerferenceUtils.setString(MainActivity.this, SharePerferenceUtils.locateCity, city);
+
+            }
+        }
+    };
+    private TextView mCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         StatusUtils.translucentStatusBar(this);
         mBaner = findViewById(R.id.banner);
+        mCity = findViewById(R.id.textView7);
+
+        initBroadCastAndCity();
         mBannerList = new ArrayList<>();
         mBannerTitleList = new ArrayList<>();
         mBannerList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527333809430&di=d279831a93cfeb4c958544a36121a62d&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F15%2F15%2F37%2F60M58PICcHi_1024.jpg");
@@ -84,32 +106,41 @@ public class MainActivity extends AppCompatActivity {
         hotCities.add(new HotCity("杭州", "浙江", "101210101"));
     }
 
-
+    private void initBroadCastAndCity() {
+        registerReceiver(mLocationBroadcast, new IntentFilter(CityPickDialogFragment.MAIN_REQUEST_ACTION));
+        if (getResources().getString(R.string.unknow).equals(SharePerferenceUtils.getString(MainActivity.this, SharePerferenceUtils.locateCity
+                , getResources().getString(R.string.unknow)))) {
+            myPermissionRequest(MAIN_REQUEST_CODE, CityPickDialogFragment.MAIN_REQUEST_ACTION);
+        } else {
+            mCity.setText(SharePerferenceUtils.getString(MainActivity.this,
+                    SharePerferenceUtils.locateCity, getResources().getString(R.string.unknow)));
+        }
+    }
 
 
     /**
      * 动态请求权限，安卓手机版本在5.0以上时需要
      */
-    public void myPermissionRequest() {
+    public void myPermissionRequest(int requestCode, String intentAction) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 检查是否拥有权限，申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义)
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION
-                }, BAIDU_ACCESS_COARSE_LOCATION);
+                }, requestCode);
             } else {
-                // 已拥有权限，作相应处理（调用定位SDK应当确保相关权限均被授权，否则可能引起定位失败）
-                location();
+                location(intentAction);
             }
         } else {
             // 配置清单中已申明权限，作相应处理，此处正对sdk版本低于23的手机
-            location();
+            location(intentAction);
         }
     }
 
-    private void location() {
+    private void location(String intentAction) {
 
-        LocateCityService.startUploadImg(MainActivity.this);
+        LocateCityService.startUploadImg(MainActivity.this, intentAction);
+
     }
 
 
@@ -125,15 +156,28 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             // requestCode即所声明的权限获取码，在checkSelfPermission时传入
-            case BAIDU_ACCESS_COARSE_LOCATION:
+            case CITY_REQUEST_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // 第一次获取到权限，请求定位
-                    location();
+                    location(CityPickDialogFragment.CITY_REQUEST_ACTION);
                 } else {
                     // 没有获取到权限，做特殊处理
                     Log.i("=========", "请求权限失败");
                     ToastUtils.showMessage("请求权限失败");
                 }
+                break;
+
+
+            case MAIN_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 第一次获取到权限，请求定位
+                    location(CityPickDialogFragment.MAIN_REQUEST_ACTION);
+                } else {
+                    // 没有获取到权限，做特殊处理
+                    Log.i("=========", "请求权限失败");
+                    ToastUtils.showMessage("请求权限失败");
+                }
+
                 break;
 
             default:
@@ -160,9 +204,9 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT)
                                     .show();
 
-                            if(!StringUtils.isEmpty(data.getName())){
-                                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
-                                intent.putExtra(Intent.EXTRA_TEXT,data.getName());
+                            if (!StringUtils.isEmpty(data.getName())) {
+                                Intent intent = new Intent(MainActivity.this, Test1Activity.class);
+                                intent.putExtra(Intent.EXTRA_TEXT, data.getName());
                                 startActivity(intent);
                             }
 
@@ -173,11 +217,18 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onLocate() {
 
-                        myPermissionRequest();
+                        myPermissionRequest(CITY_REQUEST_CODE,
+                                CityPickDialogFragment.CITY_REQUEST_ACTION);
 
                     }
                 })
                 .show();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mLocationBroadcast);
     }
 }

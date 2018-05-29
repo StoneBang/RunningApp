@@ -37,6 +37,7 @@ import com.hbb.coder.citychoose.decoration.DividerItemDecoration;
 import com.hbb.coder.citychoose.decoration.SectionItemDecoration;
 import com.hbb.coder.citychoose.listener.InnerListener;
 import com.hbb.coder.citychoose.listener.OnPickListener;
+import com.hbb.coder.citychoose.utils.SharePerferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,8 @@ import java.util.List;
 public class CityPickDialogFragment extends AppCompatDialogFragment implements InnerListener,
         TextWatcher, SideIndexBar.OnIndexTouchedChangedListener, View.OnClickListener {
 
-    public static final String LOADLOCATION = "location";
+    public static final String CITY_REQUEST_ACTION = "location";
+    public static final String MAIN_REQUEST_ACTION = "main_request_action";
     private boolean enableAnim;
     private CityLabel mCityLable;
     private List<City> mAllCities;
@@ -68,18 +70,19 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     private ImageView mClearAllBtn;
     private int mAnimStyle;
     private OnPickListener mOnPickListener;
-    private BroadcastReceiver mLocationBroadcast=new BroadcastReceiver() {
+    private BroadcastReceiver mLocationBroadcast = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction()==LOADLOCATION){
+            if (intent.getAction() == CITY_REQUEST_ACTION) {
 
                 String city = intent.getStringExtra(Intent.EXTRA_TEXT);
-
+                SharePerferenceUtils.setString(getActivity(), SharePerferenceUtils.locateCity, city);
                 CityPicker.getInstance().locateComplete(new LocatedCity(city, "", ""), LocateState.SUCCESS);
 
             }
         }
     };
+
     /**
      * 获取实例
      *
@@ -114,13 +117,13 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
         mCityLable = CityLabel.getCrimeLabel(getContext());
         mAllCities = mCityLable.getAllCityList();
         mAllCities.add(0, mLocatedCity);
-        mAllCities.add(1, new HotCity("热门城市", "未知", "0"));
+        mAllCities.add(1, new HotCity("热门城市", getResources().getString(R.string.unknow), "0"));
         mResults = mAllCities;
     }
 
     private void registBroadcast() {
-        IntentFilter intentFilter = new IntentFilter(LOADLOCATION);
-        getActivity().registerReceiver(mLocationBroadcast,intentFilter);
+        IntentFilter intentFilter = new IntentFilter(CITY_REQUEST_ACTION);
+        getActivity().registerReceiver(mLocationBroadcast, intentFilter);
     }
 
 
@@ -225,7 +228,9 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
 
     private void initLocatedCity() {
         if (mLocatedCity == null) {
-            mLocatedCity = new LocatedCity(getString(R.string.cp_locating), "未知", "0");
+            String city = SharePerferenceUtils.getString(getActivity(), SharePerferenceUtils.locateCity,
+                    getActivity().getResources().getString(R.string.unknow));
+            mLocatedCity = new LocatedCity(getString(R.string.cp_locating), city, "0");
             locateState = LocateState.FAILURE;
         } else {
             locateState = LocateState.SUCCESS;

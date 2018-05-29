@@ -151,6 +151,7 @@ public  class BasePresent {
     }
 
     public void getWeatherForecast(String city) {
+        mBaseActivity.getContentPage().setState(ContentPage.STATE_LOADING);
         HashMap<String, Object> weatherRequest = new HashMap<>();
         weatherRequest.put("location", city);
         weatherRequest.put("key", Constants.weatherKey);

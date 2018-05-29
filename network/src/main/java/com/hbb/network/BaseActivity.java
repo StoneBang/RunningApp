@@ -1,5 +1,6 @@
 package com.hbb.network;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     public ContentPage mContentPage;
 
 
-    public HashMap<String, Object> serverDate;
 
     public ContentPage getContentPage() {
         return mContentPage;
@@ -81,4 +81,23 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
      */
     public abstract View getSuccessView();
 
+
+    public  void startMyActivity(Class clazz){
+        Intent intent = new Intent(this, clazz);
+        intent.putExtra(Intent.EXTRA_TEXT,"南京");
+        startActivity(intent);
+    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        mContentPage.startAnimator();
+//    }
+//
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        mContentPage.resetAnimator();
+//    }
 }
