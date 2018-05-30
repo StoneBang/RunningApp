@@ -12,6 +12,8 @@
     <style name="CityPickerStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <!--是否去除标题 -->
         <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <!--是否去除边框-->
         <item name="android:windowFrame">@null</item>
         <!--是否浮现在activity之上-->

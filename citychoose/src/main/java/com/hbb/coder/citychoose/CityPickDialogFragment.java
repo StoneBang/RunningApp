@@ -101,7 +101,6 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         registBroadcast();
 
         setStyle(STYLE_NO_TITLE, R.style.CityPickerStyle);
@@ -230,8 +229,15 @@ public class CityPickDialogFragment extends AppCompatDialogFragment implements I
         if (mLocatedCity == null) {
             String city = SharePerferenceUtils.getString(getActivity(), SharePerferenceUtils.locateCity,
                     getActivity().getResources().getString(R.string.unknow));
-            mLocatedCity = new LocatedCity(getString(R.string.cp_locating), city, "0");
-            locateState = LocateState.FAILURE;
+            if(getActivity().getResources().getString(R.string.unknow).equals(city)){
+                mLocatedCity = new LocatedCity(getString(R.string.unknow), "", "0");
+                locateState = LocateState.FAILURE;
+            }else{
+                mLocatedCity = new LocatedCity(city, "", "0");
+                locateState = LocateState.SUCCESS;
+            }
+
+
         } else {
             locateState = LocateState.SUCCESS;
         }

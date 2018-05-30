@@ -150,13 +150,13 @@ public  class BasePresent {
         });
     }
 
-    public void getWeatherForecast(String city) {
+    public void getWeatherForecast(String city,String url) {
         mBaseActivity.getContentPage().setState(ContentPage.STATE_LOADING);
         HashMap<String, Object> weatherRequest = new HashMap<>();
         weatherRequest.put("location", city);
         weatherRequest.put("key", Constants.weatherKey);
         Call<HashMap<String, Object>> weatherForecast = mCommonServices.
-                getWeatherForecast(Constants.weatherForecastUrl, weatherRequest);
+                getWeatherForecast(url, weatherRequest);
         requestObserverable(weatherForecast);
     }
 }

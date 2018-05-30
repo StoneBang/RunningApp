@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/cp_search_view" />
+    <include layout="@layout/cp_search_view"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"

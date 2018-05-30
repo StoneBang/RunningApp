@@ -6,17 +6,24 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:gravity="center_vertical"
-    android:padding="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="36dp"
+    android:paddingBottom="16dp"
     tools:showIn="@layout/cp_dialog_city_picker">
 
     <EditText
         android:id="@+id/cp_search_box"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@null"
+        android:background="@drawable/search_bg"
         android:hint="?attr/cpSearchHintText"
         android:maxLength="20"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:maxLines="1"
         android:textCursorDrawable="?attr/cpSearchCursorDrawable"
         android:textColor="?attr/cpSearchTextColor"
@@ -32,17 +39,17 @@
         android:scaleType="fitCenter"
         android:src="?attr/cpClearTextIcon" />
 
-    <Space
-        android:layout_width="6dp"
-        android:layout_height="match_parent" />
+    <!--<Space-->
+        <!--android:layout_width="6dp"-->
+        <!--android:layout_height="match_parent" />-->
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="14dp"
-        android:background="@color/cp_color_gray_light"/>
+    <!--<View-->
+        <!--android:layout_width="1px"-->
+        <!--android:layout_height="14dp"-->
+        <!--android:background="@color/cp_color_gray_light"/>-->
 
     <Space
-        android:layout_width="16dp"
+        android:layout_width="10dp"
         android:layout_height="match_parent" />
 
     <TextView

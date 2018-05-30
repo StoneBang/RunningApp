@@ -14,6 +14,7 @@ import com.hbb.coder.smartgeoponics.adapter.WeatherRecyckeAdapter;
 import com.hbb.coder.smartgeoponics.utils.StatusUtils;
 import com.hbb.coder.smartgeoponics.utils.ToastUtils;
 import com.hbb.network.BaseActivity;
+import com.hbb.network.base.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class WeatherActivity extends BaseActivity {
     protected void requestData() {
         if(getIntent()!=null){
             String city = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-            mBasePresent.getWeatherForecast(city);
+            mBasePresent.getWeatherForecast(city, Constants.weatherForecastUrl);
         }
     }
 
@@ -44,6 +45,12 @@ public class WeatherActivity extends BaseActivity {
         View inflate = View.inflate(WeatherActivity.this, R.layout.activity_weather,
                 null);
         mWeatherRecycle = inflate.findViewById(R.id.weather_recycle);
+        inflate.findViewById(R.id.title).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMyActivity(Test2Activity.class);
+            }
+        });
         return inflate;
     }
 

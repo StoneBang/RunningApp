@@ -65,7 +65,7 @@ public class CalendarUtils {
 
             Date parse = simpleDateFormat.parse(date);
 
-             simpleDateFormat = new SimpleDateFormat("MM/dd");
+            simpleDateFormat = new SimpleDateFormat("MM/dd");
 
             String format = simpleDateFormat.format(parse);
 
@@ -79,4 +79,53 @@ public class CalendarUtils {
         return "";
 
     }
+
+
+    /**
+     * 获得当前日期
+     */
+    public static String getCurrentDate(String format) {
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+            return simpleDateFormat.format(new Date());
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 获得当前日期
+     */
+    public static String getCurrentWeek() {
+
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(new Date());
+        int dayOfWeek = instance.get(Calendar.DAY_OF_WEEK);
+        switch (dayOfWeek) {
+            case Calendar.MONDAY:
+                return "星期一";
+            case Calendar.TUESDAY:
+                return "星期二";
+            case Calendar.WEDNESDAY:
+                return "星期三";
+            case Calendar.THURSDAY:
+                return "星期四";
+            case Calendar.FRIDAY:
+                return "星期五";
+            case Calendar.SATURDAY:
+                return "星期六";
+            case Calendar.SUNDAY:
+                return "星期日";
+
+        }
+        return "";
+    }
+
+
+
 }

@@ -12,9 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.internal.LinkedTreeMap;
 import com.hbb.coder.citychoose.CityPickDialogFragment;
 import com.hbb.coder.citychoose.CityPicker;
 import com.hbb.coder.citychoose.bean.City;
@@ -25,27 +27,34 @@ import com.hbb.coder.citychoose.listener.OnPickListener;
 import com.hbb.coder.citychoose.location.LocateCityService;
 import com.hbb.coder.citychoose.utils.SharePerferenceUtils;
 import com.hbb.coder.smartgeoponics.activity.Test1Activity;
+import com.hbb.coder.smartgeoponics.activity.WeatherActivity;
+import com.hbb.coder.smartgeoponics.utils.CalendarUtils;
 import com.hbb.coder.smartgeoponics.utils.StatusUtils;
 import com.hbb.coder.smartgeoponics.utils.StringUtils;
 import com.hbb.coder.smartgeoponics.utils.ToastUtils;
+import com.hbb.coder.smartgeoponics.utils.WeatherUtils;
 import com.hbb.coder.widget.banner.Banner;
 import com.hbb.coder.widget.banner.BannerConfig;
 import com.hbb.coder.widget.banner.GlideImageLoader;
 import com.hbb.coder.widget.banner.Transformer;
+import com.hbb.network.BaseActivity;
+import com.hbb.network.base.Constants;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
 /**
  *
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     private static final int CITY_REQUEST_CODE = 100;
     private static final int MAIN_REQUEST_CODE = 200;
-
+    private TextView mCity;
     private List<HotCity> hotCities;
     private Banner mBaner;
     private ArrayList<String> mBannerList;
@@ -54,23 +63,45 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction() == CityPickDialogFragment.MAIN_REQUEST_ACTION) {
-                String city = intent.getStringExtra(Intent.EXTRA_TEXT);
-                mCity.setText(city);
-                SharePerferenceUtils.setString(MainActivity.this, SharePerferenceUtils.locateCity, city);
-
+                mMCityStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+                mCity.setText(mMCityStr);
+                SharePerferenceUtils.setString(MainActivity.this, SharePerferenceUtils.locateCity, mMCityStr);
+                mBasePresent.getWeatherForecast(mMCityStr, Constants.weatherUrl);
             }
         }
     };
-    private TextView mCity;
+    private String mMCityStr;
+    private ImageView mWeatherImage;
+    private TextView mWeatherTemp;
+    private TextView mWeatherText;
+    private TextView mWeatherWind;
+    private TextView mWeek;
+    private TextView mDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         StatusUtils.translucentStatusBar(this);
-        mBaner = findViewById(R.id.banner);
-        mCity = findViewById(R.id.textView7);
 
+    }
+
+    @Override
+    protected void requestData() {
+        mBasePresent.getWeatherForecast(mMCityStr, Constants.weatherUrl);
+    }
+
+    @Override
+    public View getSuccessView() {
+        View inflate = View.inflate(MainActivity.this, R.layout.activity_main, null);
+        mBaner = inflate.findViewById(R.id.banner);
+        mCity = inflate.findViewById(R.id.textView7);
+        mWeatherImage = inflate.findViewById(R.id.imageView5);
+        mWeatherTemp = inflate.findViewById(R.id.textView9);
+        mWeatherText = inflate.findViewById(R.id.textView12);
+        mWeatherWind = inflate.findViewById(R.id.textView13);
+        mWeek = inflate.findViewById(R.id.textView14);
+        mDate = inflate.findViewById(R.id.textView15);
         initBroadCastAndCity();
         mBannerList = new ArrayList<>();
         mBannerTitleList = new ArrayList<>();
@@ -104,17 +135,21 @@ public class MainActivity extends AppCompatActivity {
         hotCities.add(new HotCity("广州", "广东", "101280101"));
         hotCities.add(new HotCity("深圳", "广东", "101280601"));
         hotCities.add(new HotCity("杭州", "浙江", "101210101"));
+        return inflate;
     }
 
     private void initBroadCastAndCity() {
         registerReceiver(mLocationBroadcast, new IntentFilter(CityPickDialogFragment.MAIN_REQUEST_ACTION));
-        if (getResources().getString(R.string.unknow).equals(SharePerferenceUtils.getString(MainActivity.this, SharePerferenceUtils.locateCity
-                , getResources().getString(R.string.unknow)))) {
-            myPermissionRequest(MAIN_REQUEST_CODE, CityPickDialogFragment.MAIN_REQUEST_ACTION);
-        } else {
-            mCity.setText(SharePerferenceUtils.getString(MainActivity.this,
-                    SharePerferenceUtils.locateCity, getResources().getString(R.string.unknow)));
-        }
+
+        myPermissionRequest(MAIN_REQUEST_CODE, CityPickDialogFragment.MAIN_REQUEST_ACTION);
+
+//        if (getResources().getString(R.string.unknow).equals(SharePerferenceUtils.getString(MainActivity.this, SharePerferenceUtils.locateCity
+//                , getResources().getString(R.string.unknow)))) {
+//
+//        } else {
+//            mCity.setText(SharePerferenceUtils.getString(MainActivity.this,
+//                    SharePerferenceUtils.locateCity, getResources().getString(R.string.unknow)));
+//        }
     }
 
 
@@ -205,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                                     .show();
 
                             if (!StringUtils.isEmpty(data.getName())) {
-                                Intent intent = new Intent(MainActivity.this, Test1Activity.class);
+                                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
                                 intent.putExtra(Intent.EXTRA_TEXT, data.getName());
                                 startActivity(intent);
                             }
@@ -230,5 +265,60 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mLocationBroadcast);
+    }
+
+    @Override
+    public void success(HashMap<String, Object> object) {
+        ArrayList<LinkedTreeMap<String, Object>> heWeather6 = (ArrayList<LinkedTreeMap<String, Object>>) object.get("HeWeather6");
+
+        LinkedTreeMap<String, Object> currentForecast = (LinkedTreeMap<String, Object>)
+                heWeather6.get(0);
+
+        LinkedTreeMap<String, Object> nowDate = (LinkedTreeMap<String, Object>) currentForecast.get("now");
+
+        //阴天
+        String condTxt = StringUtils.buildString(nowDate.get("cond_txt"));
+        String condCode = StringUtils.buildString(nowDate.get("cond_code"));
+
+        //实时温度
+        String tmpMax = StringUtils.buildString(nowDate.get("tmp"));
+        //风力情况
+
+        String windSc = StringUtils.buildString(nowDate.get("wind_dir"),
+                nowDate.get("wind_sc") + "级");
+
+        String week = CalendarUtils.getCurrentWeek();
+
+        String date = CalendarUtils.getCurrentDate("yyyy-MM-dd");
+
+
+        if (WeatherUtils.getWeatherType(condCode) == WeatherUtils.weather_sun) {
+            mWeatherImage.setImageResource(R.drawable.sunshine);
+        } else if (WeatherUtils.getWeatherType(condCode) == WeatherUtils.weather_cloudy) {
+
+            mWeatherImage.setImageResource(R.drawable.cloudy);
+        } else if (WeatherUtils.getWeatherType(condCode) == WeatherUtils.weather_rain) {
+            mWeatherImage.setImageResource(R.drawable.rain);
+
+        } else if (WeatherUtils.getWeatherType(condCode) == WeatherUtils.weather_snow) {
+
+            mWeatherImage.setImageResource(R.drawable.snow);
+        } else if (WeatherUtils.getWeatherType(condCode) == WeatherUtils.weather_thunder) {
+
+            mWeatherImage.setImageResource(R.drawable.thunder);
+        } else {
+            mWeatherImage.setImageResource(R.drawable.sunshine);
+        }
+
+        mWeatherTemp.setText(tmpMax);
+        mWeatherText.setText(condTxt);
+        mWeatherWind.setText(windSc);
+        mWeek.setText(week);
+        mDate.setText(date);
+    }
+
+    @Override
+    public void fail(Object object) {
+
     }
 }

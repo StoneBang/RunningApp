@@ -17,12 +17,18 @@ import java.lang.ref.WeakReference;
 
 public class ToastUtils {
 
-    public static Toast mToast = new Toast(MyAppication.sContext);
+    public static Toast mToast = null;
 
     public static void showMessage(String vStr) {
-        mToast.cancel();
-        mToast.setText(vStr);
-        mToast.setDuration(Toast.LENGTH_SHORT);
+
+        if (mToast == null) {
+
+            mToast = Toast.makeText(MyAppication.sContext, vStr, Toast.LENGTH_SHORT);
+
+        } else {
+
+            mToast.setText(vStr);
+        }
         mToast.show();
     }
 

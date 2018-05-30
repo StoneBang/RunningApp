@@ -11,7 +11,10 @@ import com.hbb.network.dragger.component.DaggerCommonConponent;
 import com.hbb.network.dragger.module.PresentModule;
 import com.hbb.network.interfaces.IView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,7 +33,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     public final static String TAG = "This  is my test";
 
     public ContentPage mContentPage;
-
 
 
     public ContentPage getContentPage() {
@@ -88,16 +90,4 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         startActivity(intent);
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        mContentPage.startAnimator();
-//    }
-//
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        mContentPage.resetAnimator();
-//    }
 }
