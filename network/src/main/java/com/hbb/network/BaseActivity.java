@@ -3,13 +3,20 @@ package com.hbb.network;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hbb.network.base.BasePresent;
 import com.hbb.network.dragger.component.DaggerCommonConponent;
 import com.hbb.network.dragger.module.PresentModule;
 import com.hbb.network.interfaces.IView;
+import com.hbb.network.utils.ResourseUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +40,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     public final static String TAG = "This  is my test";
 
     public ContentPage mContentPage;
+    private Toolbar mToolbar;
+    private TextView mTitleIcon;
+    private TextView mTitleText;
 
 
     public ContentPage getContentPage() {
@@ -65,7 +75,43 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         };
 
         setContentView(mContentPage);
+        mToolbar=mContentPage.findViewById(R.id.toolbar);
+        mTitleIcon = (TextView) findViewById(R.id.title_icon);
+        mTitleText = (TextView) findViewById(R.id.title_text);
+        initToolbar();
 
+    }
+
+
+    /**
+     * 注意没有toolbar的页面
+     */
+    private void initToolbar() {
+        if (null != mToolbar) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            int topPadding= ResourseUtils.getInternalDimensionSize(
+                    getResources(), ResourseUtils.STATUS_BAR_HEIGHT);
+//            mToolbar.setLayoutParams(params);
+//            mToolbar.setPadding(0, 0, 0, 0);
+
+            if (mTitleIcon != null) {
+                mTitleIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
+            }
+
+        }
+    }
+
+    public void setTitleContent(String title) {
+        mTitleText.setText(title);
     }
 
     /**
@@ -84,9 +130,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     public abstract View getSuccessView();
 
 
-    public  void startMyActivity(Class clazz){
+    public void startMyActivity(Class clazz) {
         Intent intent = new Intent(this, clazz);
-        intent.putExtra(Intent.EXTRA_TEXT,"南京");
+        intent.putExtra(Intent.EXTRA_TEXT, "南京");
         startActivity(intent);
     }
 

@@ -26,7 +26,7 @@ public class WeatherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusUtils.translucentStatusBar(this);
+        StatusUtils.setStatusBarColor(this,getResources().getColor(R.color.them_color));
 
 
     }
@@ -41,7 +41,13 @@ public class WeatherActivity extends BaseActivity {
 
 
     @Override
-    public View getSuccessView() {
+    protected void onStart() {
+        super.onStart();
+        setTitleContent("天气");
+    }
+
+    @Override
+        public View getSuccessView() {
         View inflate = View.inflate(WeatherActivity.this, R.layout.activity_weather,
                 null);
         mWeatherRecycle = inflate.findViewById(R.id.weather_recycle);
@@ -51,11 +57,13 @@ public class WeatherActivity extends BaseActivity {
                 startMyActivity(Test2Activity.class);
             }
         });
+
         return inflate;
     }
 
     @Override
     public void success(HashMap<String, Object> object) {
+
 
 
         ArrayList heWeather6 = (ArrayList) object.get("HeWeather6");

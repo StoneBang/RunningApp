@@ -38,6 +38,7 @@ import com.hbb.coder.widget.banner.BannerConfig;
 import com.hbb.coder.widget.banner.GlideImageLoader;
 import com.hbb.coder.widget.banner.Transformer;
 import com.hbb.network.BaseActivity;
+import com.hbb.network.ContentPage;
 import com.hbb.network.base.Constants;
 
 import java.util.ArrayList;
@@ -66,7 +67,9 @@ public class MainActivity extends BaseActivity {
                 mMCityStr = intent.getStringExtra(Intent.EXTRA_TEXT);
                 mCity.setText(mMCityStr);
                 SharePerferenceUtils.setString(MainActivity.this, SharePerferenceUtils.locateCity, mMCityStr);
-                mBasePresent.getWeatherForecast(mMCityStr, Constants.weatherUrl);
+                if(!StringUtils.isEmpty(mMCityStr)){
+                    mBasePresent.getWeatherForecast(mMCityStr, Constants.weatherUrl);
+                }
             }
         }
     };
@@ -88,7 +91,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void requestData() {
-        mBasePresent.getWeatherForecast(mMCityStr, Constants.weatherUrl);
+        if(!StringUtils.isEmpty(mMCityStr)){
+            mBasePresent.getWeatherForecast(mMCityStr, Constants.weatherUrl);
+        }
     }
 
     @Override

@@ -122,4 +122,6 @@ public class RoundAngleImageView extends AppCompatImageView {
         canvas.drawPath(path, paint);
     }
 
+
+
 }
