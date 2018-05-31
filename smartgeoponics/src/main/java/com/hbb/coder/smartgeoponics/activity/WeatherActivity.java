@@ -64,8 +64,6 @@ public class WeatherActivity extends BaseActivity {
     @Override
     public void success(HashMap<String, Object> object) {
 
-
-
         ArrayList heWeather6 = (ArrayList) object.get("HeWeather6");
 
         ArrayList<LinkedTreeMap<String, Object>> daily_forecast = (ArrayList<LinkedTreeMap<String, Object>>)
