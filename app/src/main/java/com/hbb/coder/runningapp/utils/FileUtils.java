@@ -49,14 +49,6 @@ public class FileUtils {
                 .setAutoCancel(false);//设置通知被点击一次是否自动取消
         sHandler = new Handler();
 
-//要做的事情，这里再次调用此Runnable对象，以实现每两秒实现一次的定时器操作
-        sRunnable = new Runnable() {
-            @Override
-            public void run() {
-                //要做的事情，这里再次调用此Runnable对象，以实现每两秒实现一次的定时器操作
-                sHandler.postDelayed(this, 500);
-            }
-        };
     }
 
     public static File createFile(Context context) {
