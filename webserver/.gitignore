@@ -1,0 +1,19 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea/**/*.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+**/*.apk
+/app/full
+
+# freeline
+**/freeline*
+reports
+
+/gradle/wrapper/gradle*.zip
+/cloud-base/src/main/java/com/jswym/cloud/dao/gen/
