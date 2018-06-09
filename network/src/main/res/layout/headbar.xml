@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/them_color"
+    app:layout_scrollFlags="scroll|enterAlways"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+        <TextView
+            android:id="@+id/title_icon"
+            android:layout_width="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#ffffff"
+            android:text="返回"
+            android:drawableLeft="@drawable/arrow_back"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/title_text"
+            tools:text="这是什么标题"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center" />
+
+
+</android.support.v7.widget.Toolbar>
